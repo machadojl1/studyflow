@@ -66,30 +66,54 @@
 
         <div class="overlay-modal">
             <div class="box-modal">
-                <div class="content-modal"></div>
                 <button id="close-modal">X</button>
+                <div class="content-modal"></div>
             </div>
         </div>
 
         <main>
             <div class="cards-flex">
+                <div class="card">
 
+                    <div>
+                        <p>example</p>
+                        <p>last session: xxxx</p>
+                        <button class="save-session open-modal btn btn-secondary">Register</button>
+                    </div>
+
+                </div>
             </div>
         </main>
 
         <footer>
-            <button id="add-study-button" class="btn btn-lg btn-success">ADD STUDY</button>
+            <button class="create-study open-modal btn btn-lg btn-success">ADD STUDY</button>
         </footer>
+
+
+
         <script>
             const overlay_modal = document.querySelector(".overlay-modal")
             
             // opening the pop-up
-            let save_session = document.querySelectorAll(".save-session")
+            let save_session = document.querySelectorAll(".open-modal")
             save_session.forEach(element => {
-                element.addEventListener("click", (event) => {
+                element.addEventListener("click", async (event) => {
                     event.preventDefault();
+                    overlay_modal.style.display = "flex";  
+                    document.querySelector(".content-modal").innerHTML = "";
 
-                    overlay_modal.style.display = "flex";
+                    if (element.classList.contains("create-study")) {
+                        let response = await fetch("/create");
+                        let html = await response.text();
+
+                        document.querySelector(".content-modal").innerHTML = html;
+                    }
+                    else if (element.classList.contains("save-session")) {
+                        let response = await fetch("/save");
+                        let html = await response.text();
+
+                        document.querySelector(".content-modal").innerHTML = html;
+                    }
                 })
             });
 
@@ -101,8 +125,7 @@
 
                 overlay_modal.style.display = "none";
             })
-
-            // modal fetch ADD STUDY button (Python route)
+            
         </script>
     </body>
 </html>
