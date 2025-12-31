@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    stmt = models.session.query(models.StdSession).limit(7).all()
+    stmt = models.session.query(models.Subject).limit(7).all()
     return render_template("index.html", stmt=stmt)
 
 
@@ -25,8 +25,9 @@ def save():
 def create_new():
     if request.method == "POST":
         name = request.form.get("name")
-        description = request.form.get("description")    
-        subject = models.Subject(name=name, description=description)
-        models.session.add(subject)
-        models.session.commit()
+        description = request.form.get("description")  
+        if name and description:  
+            subject = models.Subject(name=name, description=description)
+            models.session.add(subject)
+            models.session.commit()
         return redirect("/")
