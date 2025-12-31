@@ -1,3 +1,4 @@
+import models
 from flask import Flask, render_template, request, redirect, jsonify
 
 app = Flask(__name__)
@@ -5,7 +6,8 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    stmt = models.session.query(models.StdSession).limit(7).all()
+    return render_template("index.html", stmt=stmt)
 
 
 @app.route("/create")
@@ -16,3 +18,15 @@ def create():
 @app.route("/save")
 def save():
     return render_template("save.html")
+
+
+# DATA ROUTES
+@app.route("/create/new", methods=["GET", "POST"])
+def create_new():
+    if request.method == "POST":
+        name = request.form.get("name")
+        description = request.form.get("description")    
+        subject = models.Subject(name=name, description=description)
+        models.session.add(subject)
+        models.session.commit()
+        return redirect("/")
