@@ -98,7 +98,7 @@
                 {% for object in stmt %}
                     <div class="card mb-4">
                         <h2>{{ object.name }}</h2>
-                        <button class="open-modal save-session card-button">+</button>
+                        <button class="open-modal save-session card-button" data-id="{{ object.id }}">+</button>
                     </div>
                 {% endfor %}
             </div>
@@ -130,7 +130,7 @@
                     else if (element.classList.contains("save-session")) {
                         event.stopPropagation();
 
-                        let response = await fetch("/save");
+                        let response = await fetch("/save/" + element.dataset.id);
                         let html = await response.text();
 
                         document.querySelector(".content-modal").innerHTML = html;

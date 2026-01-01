@@ -1,35 +1,26 @@
-<form>
-    <div class="row mb-3 g-2"> <div class="col-8">
+<form action="/save/new/{{ id }}" method="post">
+    <div class="row mb-3 g-2"> <div class="col-12">
             <div class="form-floating">
-                <input type="text" class="form-control" id="topicInput" placeholder="Topic">
+                <input name="topic" type="text" class="form-control" required id="topicInput" placeholder="Topic">
                 <label for="topicInput">Topic</label>
             </div>
         </div>
 
-        <div class="col-4">
-            <div class="form-floating">
-                <select class="form-select" id="subjectSelect">
-                    <option selected disabled>Select...</option>
-                    <option value="1">Math</option>
-                    <option value="2">Science</option>
-                </select>
-                <label for="subjectSelect">Subject</label>
-            </div>
-        </div>
+        
     </div>
 
     <div class="row mb-3 g-2">
         
         <div class="col-6">
             <div class="form-floating">
-                <input type="number" class="form-control" id="durationInput" placeholder="Duration">
+                <input name="duration" type="number" class="form-control" required id="durationInput" placeholder="Duration">
                 <label for="durationInput">Duration (min)</label>
             </div>
         </div>
 
         <div class="col-6">
             <div class="form-floating">
-                <input type="date" class="form-control" id="dateInput" placeholder="Date">
+                <input name="date" type="date" class="form-control" id="dateInput" placeholder="Date">
                 <label for="dateInput">Date</label>
             </div>
         </div>
@@ -38,7 +29,7 @@
     <div class="row mb-3">
         <div class="col-12">
             <div class="form-floating">
-                <textarea class="form-control" placeholder="Notes" id="notesInput" style="width: 500px; height: 150px"></textarea>
+                <textarea name="notes" class="form-control" placeholder="Notes" id="notesInput" style="width: 500px; height: 150px"></textarea>
                 <label for="notesInput">Notes</label>
             </div>
         </div>
