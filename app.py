@@ -31,3 +31,9 @@ def create_new():
             models.session.add(subject)
             models.session.commit()
         return redirect("/")
+    
+# WORK HERE
+@app.route("/save/new", methods=["GET", "POST"])
+def save_new():
+    if request.method == "POST":
+        ...
