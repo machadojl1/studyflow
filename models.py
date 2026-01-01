@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, func, Integer, String, Date, ForeignKey, MetaData
+from sqlalchemy import create_engine, Column, func, Integer, String, Date, ForeignKey
 from sqlalchemy.orm import declarative_base, sessionmaker, relationship
 
 engine = create_engine("sqlite:///subjects.db")

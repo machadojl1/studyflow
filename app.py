@@ -1,5 +1,5 @@
 import models
-import datetime
+from datetime import date
 from flask import Flask, render_template, request, redirect, jsonify
 
 app = Flask(__name__)
@@ -8,7 +8,17 @@ app = Flask(__name__)
 @app.route("/")
 def index():
     stmt = models.session.query(models.Subject).limit(7).all()
-    return render_template("index.html", stmt=stmt)
+    sender = []
+    for result in stmt:
+        from sqlalchemy import desc
+        query = models.session.query(models.StdSession.date).filter(models.StdSession.subject_id == result.id).order_by(desc(models.StdSession.date)).limit(1).scalar()
+        hash = {"object": result, "delta": None}
+        
+        if query:
+            hash["delta"] = (date.today() - query).days
+        sender.append(hash)
+    print(sender)
+    return render_template("index.html", sender=sender)
 
 
 @app.route("/create")
@@ -33,7 +43,6 @@ def create_new():
             models.session.commit()
         return redirect("/")
     
-# WORK HERE
 @app.route("/save/new/<int:id>", methods=["GET", "POST"])
 def save_new(id):
     if request.method == "POST":
@@ -47,8 +56,10 @@ def save_new(id):
             }
 
             if session_data.get("topic") and session_data.get("duration"):
-                if session_data.get("date"):
-                    session_data["date"] = datetime.date.fromisoformat(session_data.get("date"))
+                if session_data["date"]:
+                    session_data["date"] = date.fromisoformat(session_data.get("date"))
+                    if session_data.get("date") > date.today():
+                        del session_data["date"]
                 else: del session_data["date"]
 
                 if not session_data.get("notes"): del session_data["notes"]

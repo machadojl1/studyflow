@@ -68,6 +68,8 @@
                 border-radius: 140px;
             }
             .card-button {
+                margin: 0;
+                border: 0;
                 aspect-ratio: 1/1;
                 right: 0px;
                 height: 90px;
@@ -76,8 +78,13 @@
                 background-color: black;
                 color: white;
             }
+            .card-button:hover {
+                background-color: #191919;
+                transform: scale(1.145, 1.145);
+            }
             .card:hover {
                 box-shadow: 5px 5px 10px rgba(255, 255, 255, 0.3);
+                transform: scale(1.025, 1.025);
             }
         </style>
     </head>
@@ -95,10 +102,10 @@
 
         <main>
             <div class="cards-flex">
-                {% for object in stmt %}
-                    <div class="card mb-4">
-                        <h2>{{ object.name }}</h2>
-                        <button class="open-modal save-session card-button" data-id="{{ object.id }}">+</button>
+                {% for hash in sender %}
+                    <div class="card mb-4" data-delta="{{ hash['delta'] }}">
+                        <h2>{{ (hash["object"]).name }}</h2>
+                        <button class="open-modal save-session card-button" data-id="{{ (hash['object']).id }}">+</button>
                     </div>
                 {% endfor %}
             </div>
@@ -149,11 +156,26 @@
             // add read card logic
             cards = document.querySelectorAll(".card")
             cards.forEach(card => {
+                delta = card.dataset.delta;
+                if (delta !== 'None') {
+                    delta = Number(delta);
+
+                    if (delta > 7) {
+                        card.style.backgroundColor = "red";
+                    }
+                    else if (delta <= 7 && delta >= 4) {
+                        card.style.backgroundColor = "yellow";
+                    }
+                    else {
+                        card.style.backgroundColor = "green";
+                    }
+                }
+
+
                 card.addEventListener("click", async (event) => {
                     event.preventDefault();
 
                     // MAKE READ FETCH HERE
-                    alert("card clicked!");
                 }) 
             })
         </script>
