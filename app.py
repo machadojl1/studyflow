@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    stmt = models.session.query(models.Subject).limit(7).all()
+    stmt = models.session.query(models.Subject).all()
     sender = []
     for result in stmt:
         from sqlalchemy import desc
@@ -68,4 +68,13 @@ def save_new(id):
                 models.session.add(new_session)
                 models.session.commit()
         return redirect("/")
-            
+    
+
+@app.route("/read/<int:id>")
+def read(id=None):
+    if id:
+        subject = models.session.query(models.Subject).filter(models.Subject.id == id).first()
+        sessions = sorted(subject.sessions, key=lambda obj: obj.date, reverse=True)
+        if sessions:
+            return render_template("read.html", subject=subject, sessions=sessions)
+        return redirect("/")            

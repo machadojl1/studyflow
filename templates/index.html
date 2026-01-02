@@ -15,6 +15,7 @@
                 padding: 40px;
                 font-size: 40px;
                 color: white;
+                box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
             }
             main {
                 padding: 120px;
@@ -40,7 +41,7 @@
             }
             .box-modal {
                 background-color: #2c2c2c;
-                padding: 30px;
+                padding: 40px;
                 border-radius: 20px;
             }
             .cards-flex {
@@ -86,6 +87,16 @@
                 box-shadow: 5px 5px 10px rgba(255, 255, 255, 0.3);
                 transform: scale(1.025, 1.025);
             }
+            .save-session {
+                z-index: 950;
+            }
+            .desc {
+                display: none;
+            }
+            .card:hover .desc {
+                display: inline;
+            }
+            .white {color: white;}
         </style>
     </head>
 
@@ -103,8 +114,11 @@
         <main>
             <div class="cards-flex">
                 {% for hash in sender %}
-                    <div class="card mb-4" data-delta="{{ hash['delta'] }}">
-                        <h2>{{ (hash["object"]).name }}</h2>
+                    <div class="card mb-4" data-id="{{ (hash['object']).id }}" data-delta="{{ hash['delta'] }}">
+                        <h2>{{ (hash["object"]).name }}
+                            <small class="desc text-body-secondary">{{ (hash["object"]).description | truncate(60) }}</small>
+                        </h2>
+                        <a href="/read/{{ (hash['object']).id }}" class="stretched-link"></a>
                         <button class="open-modal save-session card-button" data-id="{{ (hash['object']).id }}">+</button>
                     </div>
                 {% endfor %}
@@ -154,29 +168,22 @@
             })
 
             // add read card logic
-            cards = document.querySelectorAll(".card")
+            let cards = document.querySelectorAll(".card")
             cards.forEach(card => {
                 delta = card.dataset.delta;
                 if (delta !== 'None') {
                     delta = Number(delta);
 
                     if (delta > 7) {
-                        card.style.backgroundColor = "red";
+                        card.style.backgroundColor = "crimson";
                     }
                     else if (delta <= 7 && delta >= 4) {
-                        card.style.backgroundColor = "yellow";
+                        card.style.backgroundColor = "rgba(250, 235, 110)";
                     }
                     else {
-                        card.style.backgroundColor = "green";
+                        card.style.backgroundColor = "mediumseagreen";
                     }
-                }
-
-
-                card.addEventListener("click", async (event) => {
-                    event.preventDefault();
-
-                    // MAKE READ FETCH HERE
-                }) 
+                } 
             })
         </script>
     </body>
